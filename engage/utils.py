@@ -79,7 +79,7 @@ def get_model(provider: str, model_name: str) -> Model:
             raise SystemExit(1)
     else:  # default is google
         try:
-            from app.gemini_models import get_gemini_model
+            from engage.app.gemini_models import get_gemini_model
 
             return get_gemini_model()
         except ImportError:
@@ -88,23 +88,21 @@ def get_model(provider: str, model_name: str) -> Model:
             raise SystemExit(1)
 
 
-def get_agent(model_choice: Model, state) -> Agent:
+def get_agent(config) -> Agent:
+    # get the model
+    model_choice = get_model(
+        config["model"]["provider"], config["model"]["model_name"]
+    )
 
-    # TODO customize the agent per provider
-    # llama has trouble with history including tool messages and appears to need more guidance for using tools
-    # gemini needs the tool messages to not have the tool as role
-    # gemini via api key has trouble if show tool calls is true, via vertex it does not
-
-    # TODO toggle debug mode from command line switch
-
+    # create the agent with the chosen model
     agent = Agent(
         model=model_choice,
         tools=[
             
         ],
-        session_id="engate_agent",
-        session_name="engate_agent",
-        user_id="engate_agent",
+        session_id="engage_agent",
+        session_name="engage_agent",
+        user_id="engage_agent",
         markdown=True,
         show_tool_calls=False,
         telemetry=False,
@@ -113,7 +111,7 @@ def get_agent(model_choice: Model, state) -> Agent:
         instructions=[],
         description="You are an expert in computer security and data analysis.",
         storage=SqliteAgentStorage(
-            table_name="engate_agent", db_file=agent_storage
+            table_name="engage_agent", db_file=agent_storage
         ),
         # Adds the current date and time to the instructions
         add_datetime_to_instructions=True,
