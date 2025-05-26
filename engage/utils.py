@@ -41,7 +41,7 @@ def get_config(environment="development"):
     # load config file, expecting config.environment.yaml
     my_config = {}
     try:
-        with open(f"./files/config.{environment}.yaml") as f:
+        with open(f"./engage/files/config.{environment}.yaml") as f:
             my_config = yaml.safe_load(f.read())
     except Exception as e:
         logger.error(f"Exception retrieving config: {e}")

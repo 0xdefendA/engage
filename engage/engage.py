@@ -1,7 +1,7 @@
 import os
 import sys
 import argparse
-from engage.utils import get_config, logger
+from utils import get_config, logger
 
 # turn off telemetry
 os.environ["AGNO_TELEMETRY"] = "false"
