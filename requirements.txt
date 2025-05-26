@@ -6,3 +6,4 @@ slack-sdk
 duckduckgo-search
 openai
 google-genai
+pyyaml
