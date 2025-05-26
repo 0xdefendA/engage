@@ -1,0 +1,8 @@
+agno
+requests
+jira
+atlassian-python-api
+slack-sdk
+duckduckgo-search
+openai
+google-genai
