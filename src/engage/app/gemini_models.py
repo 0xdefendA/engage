@@ -1,11 +1,7 @@
 from agno.models.google import Gemini
 from google.genai import types
 import google.auth
-import os
-import json
 
-
-config = json.loads(os.environ["_ENGAGEE_CONFIG"]))
 
 generation_config = types.GenerateContentConfig(
     temperature=0,
@@ -39,15 +35,16 @@ safety_settings = [
 ]
 
 
-# create the model in vertex or via api key
-def get_gemini_model():
+
+def get_gemini_model(config=None):
     model_gemini = None
-    if os.environ.get("GEMINI_API_KEY"):
+    # create the model in vertex or via api key    
+    if "gemini_api_key" in config and config["gemini_api_key"]:
 
         model_gemini = Gemini(
             id=config["model_name"],
             vertexai=False,
-            api_key=os.environ.get("GEMINI_API_KEY"),
+            api_key=config["gemini_api_key"],
             generation_config=generation_config,
             safety_settings=safety_settings,
         )
