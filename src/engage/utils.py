@@ -4,6 +4,7 @@ import datetime
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+import yaml
 
 from agno.models.base import Model
 from agno.agent import Agent, AgentMemory
@@ -34,6 +35,17 @@ def day_of_week() -> str:
     """
     now = datetime.datetime.now()
     return now.strftime("%A")
+
+
+def get_config(environment="development"):
+    # load config file, expecting config.environment.yaml
+    my_config = {}
+    try:
+        with open(f"./files/config.{environment}.yaml") as f:
+            my_config = yaml.safe_load(f.read())
+    except Exception as e:
+        logger.error(f"Exception retrieving config: {e}")
+    return my_config
 
 
 # utility to stream agno run responses to shiny
