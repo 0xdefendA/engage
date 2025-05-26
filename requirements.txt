@@ -7,3 +7,6 @@ duckduckgo-search
 openai
 google-genai
 pyyaml
+sqlalchemy
+pytest
+pytest-mock

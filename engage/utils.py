@@ -110,9 +110,7 @@ def get_agent(model_choice: Model, state) -> Agent:
         telemetry=False,
         monitoring=False,
         debug_mode=False,
-        instructions=[
-,
-        ],
+        instructions=[],
         description="You are an expert in computer security and data analysis.",
         storage=SqliteAgentStorage(
             table_name="engate_agent", db_file=agent_storage
