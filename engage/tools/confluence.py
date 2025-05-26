@@ -91,4 +91,9 @@ def get_playbook_content(
     """
     # This could also read from local markdown files
     return {
-        "name":
+        "content": "## Playbook Content",
+        "metadata": {
+            "name": playbook_name,
+            "created": datetime.now().isoformat()
+        }
+    }

@@ -1,6 +1,6 @@
 from agno import Tool
 from typing import Dict, Any, List, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 from .base import BaseIntegration
 
 class JiraIntegration(BaseIntegration):
