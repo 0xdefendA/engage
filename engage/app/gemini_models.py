@@ -42,7 +42,7 @@ def get_gemini_model(config=None):
     if "gemini_api_key" in config and config["gemini_api_key"]:
 
         model_gemini = Gemini(
-            id=config["model_name"],
+            id=config["model"]["model_name"],
             vertexai=False,
             api_key=config["gemini_api_key"],
             generation_config=generation_config,
@@ -52,10 +52,10 @@ def get_gemini_model(config=None):
         # no api key, we are using vertex
         credentials, PROJECT_ID = google.auth.default()
         LOCATION = "us-central1"
-        if config["location"]:
+        if "location" in config:
             LOCATION = config["location"]
         model_gemini = Gemini(
-            id=config["model_name"],
+            id=config["model"]["model_name"],
             vertexai=True,
             project_id=PROJECT_ID,
             location=LOCATION,

@@ -57,7 +57,9 @@ def as_stream(response):
 
 
 # select the provider and model
-def get_model(provider: str, model_name: str) -> Model:
+def get_model(config ) -> Model:
+    provider=config["model"]["provider"]
+    model_name=config["model"]["model_name"]
     if provider == "openai":
         try:
             from agno.models.openai import OpenAIChat
@@ -81,7 +83,7 @@ def get_model(provider: str, model_name: str) -> Model:
         try:
             from engage.app.gemini_models import get_gemini_model
 
-            return get_gemini_model()
+            return get_gemini_model(config)
         except ImportError:
             print("Google/Gemini support requires additional packages. Install with:")
             print("pip install google-genai")
@@ -91,7 +93,7 @@ def get_model(provider: str, model_name: str) -> Model:
 def get_agent(config) -> Agent:
     # get the model
     model_choice = get_model(
-        config["model"]["provider"], config["model"]["model_name"]
+        config=config
     )
 
     # create the agent with the chosen model
