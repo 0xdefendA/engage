@@ -1,12 +1,8 @@
-import os
-import sys
 import argparse
-from utils import get_config, logger
+from engage.main import main
 
-# turn off telemetry
-os.environ["AGNO_TELEMETRY"] = "false"
 
-def main():
+def parse_args():
     parser = argparse.ArgumentParser(
         description="Engage - AI-powered SOC operations assistant"
     )
@@ -24,15 +20,8 @@ def main():
 
 
     arguments = parser.parse_args()
-    config=get_config(arguments.environment)
-    # what are we asked to do
-    playbook = arguments.playbook
-    # see if the playbook file exists
-    if not os.path.exists(playbook):
-        logger.error(f"Playbook {playbook} not found")
-        sys.exit(1)
-
-
+    return arguments
 
 if __name__ == "__main__":
-    main()
+    args= parse_args()
+    main(args)
