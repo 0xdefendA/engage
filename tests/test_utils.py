@@ -29,7 +29,7 @@ def test_get_agent_creates_agent_with_correct_config(mock_get_model, mock_config
     agent = get_agent(mock_config)
     
     assert isinstance(agent, Agent)
-    mock_get_model.assert_called_once_with("google", "gemini-1.5-flash")
+    mock_get_model.assert_called_once_with(config=mock_config)
     assert agent.model == mock_model
     assert agent.session_id == "engage_agent"
     assert agent.user_id == "engage_agent"

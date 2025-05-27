@@ -2,10 +2,22 @@ import os
 import sys
 import argparse
 from .utils import get_config, logger, get_agent
-from agno.agent import RunResponse
+from agno.agent import Agent, RunResponse
 
 # turn off telemetry
 os.environ["AGNO_TELEMETRY"] = "false"
+
+def run_agent(agent: Agent, playbook: str) -> RunResponse:
+    playbook_content = ""
+    # load the playbook
+    with open(playbook, "r") as f:
+        playbook_content = f.read()
+    # run the agent
+    agent.instructions = playbook_content
+    response=agent.run("hi")
+    logger.info(f"Response: {response.content}")    
+    # return the response
+    return response
 
 def main(arguments):
     config=get_config(arguments.environment)
@@ -18,12 +30,9 @@ def main(arguments):
 
     # create the agent
     agent = get_agent(config)
-    # load the playbook
-    with open(playbook, "r") as f:
-        playbook_content = f.read()
-    agent.instructions = playbook_content
-    response=agent.run("hi")
-    logger.info(f"Response: {response.content}")
+
+    # run the agent 
+    response = run_agent(agent=agent, playbook=playbook)
 
 
 

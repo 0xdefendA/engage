@@ -1,7 +1,7 @@
 import os
 import sys
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, mock_open
 from engage.main import main
 
 def test_main_playbook_not_found():
@@ -23,14 +23,24 @@ def test_main_playbook_exists():
     mock_args = MagicMock()
     mock_args.playbook = "existing.yml"
     mock_args.environment = "prod"
-    mock_config = {"key": "value"}
+    mock_config = {"model": {"provider":"google","model_name":"gemini-1.5-flash"}}
+    mock_playbook_content = "# Test Playbook\nThis is a test playbook for security operations."    
     
     with patch('engage.main.get_config', return_value=mock_config) as mock_get_config, \
-         patch('os.path.exists', return_value=True):
+        patch('os.path.exists', return_value=True), \
+        patch('builtins.open', mock_open(read_data=mock_playbook_content)):
         
+        # Mock the agent instance and its run method
+        mock_agent = MagicMock()
+        mock_response = MagicMock()
+        mock_response.content = "Test response"
+        mock_agent.run.return_value = mock_response
+
+
         main(mock_args)
-        
+
         mock_get_config.assert_called_once_with("prod")
+
 
 def test_main_with_empty_playbook():
     mock_args = MagicMock()
