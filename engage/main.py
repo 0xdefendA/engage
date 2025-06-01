@@ -23,3 +23,6 @@ def main(arguments):
 
     # run the agent
     response = run_agent(agent=agent, playbook=playbook)
+
+    # Print the response content to stdout
+    print(f"{response.content}")
