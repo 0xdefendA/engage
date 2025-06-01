@@ -117,11 +117,12 @@ def get_agent(config, arguments) -> Agent:
         show_tool_calls=False,
         telemetry=False,
         monitoring=False,
-        debug_mode=True,
+        debug_mode=False,
+        # setting instructions overrides the system prompt
         # instructions=[],
         additional_context=f"{environment_description}",
         # storage=SqliteAgentStorage(table_name="engage_agent", db_file=agent_storage),
-        # Adds the current date and time to the instructions
+        # Helps with context
         add_datetime_to_instructions=True,
         # # Adds the history of the conversation to the messages
         # add_history_to_messages=True,
