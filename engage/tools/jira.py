@@ -8,9 +8,9 @@ class JiraIntegration(JiraTools):
 
     def __init__(self, config: Dict[str, Any]):
         # Extract JIRA-specific config and pass to parent JiraTools
-        server_url = config.get("jira_url")
-        username = config.get("jira_username")
-        api_token = config.get("jira_api_token")
+        server_url = config.get("jira_url", "https://example.atlassian.net")
+        username = config.get("jira_username", "unknown")
+        api_token = config.get("jira_api_token", "unknown")
 
         # Initialize parent JiraTools class
         super().__init__(server_url=server_url, username=username, token=api_token)
