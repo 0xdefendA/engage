@@ -18,6 +18,7 @@ from agno.memory.db.sqlite import SqliteMemoryDb
 from agno.tools.file import FileTools
 from agno.tools.decorator import tool
 from pathlib import Path
+from engage.tools.jira import JiraIntegration
 import os
 
 
@@ -109,7 +110,7 @@ def get_agent(config, arguments) -> Agent:
     # create the agent with the chosen model
     agent = Agent(
         model=model_choice,
-        tools=[day_of_week],
+        tools=[day_of_week, JiraIntegration(config=config)],
         session_id="engage_agent",
         session_name="engage_agent",
         user_id="engage_agent",
