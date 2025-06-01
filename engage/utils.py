@@ -152,6 +152,6 @@ def run_agent(agent: Agent, playbook: str) -> RunResponse:
     # run the agent
     # agent.instructions = playbook_content
     response = agent.run(playbook_content)
-    logger.info(f"Response: {response.content}")
+    # logger.info(f"Response: {response.content}")
     # return the response
     return response
