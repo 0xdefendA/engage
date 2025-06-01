@@ -18,10 +18,10 @@ def parse_args():
         required=True,
     )
 
-
     arguments = parser.parse_args()
     return arguments
 
+
 if __name__ == "__main__":
-    args= parse_args()
+    args = parse_args()
     main(args)

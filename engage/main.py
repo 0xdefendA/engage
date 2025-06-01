@@ -1,26 +1,16 @@
 import os
 import sys
 import argparse
-from .utils import get_config, logger, get_agent
+from .utils import get_config, logger, get_agent, run_agent
 from agno.agent import Agent, RunResponse
 
-# turn off telemetry
+# turn off telemetry everywhere
 os.environ["AGNO_TELEMETRY"] = "false"
 
-def run_agent(agent: Agent, playbook: str) -> RunResponse:
-    playbook_content = ""
-    # load the playbook
-    with open(playbook, "r") as f:
-        playbook_content = f.read()
-    # run the agent
-    agent.instructions = playbook_content
-    response=agent.run("hi")
-    logger.info(f"Response: {response.content}")    
-    # return the response
-    return response
 
 def main(arguments):
-    config=get_config(arguments.environment)
+    # what environment/configuration are we using
+    config = get_config(arguments.environment)
     # what are we asked to do
     playbook = arguments.playbook
     # see if the playbook file exists
@@ -29,10 +19,7 @@ def main(arguments):
         sys.exit(1)
 
     # create the agent
-    agent = get_agent(config)
+    agent = get_agent(config, arguments)
 
-    # run the agent 
+    # run the agent
     response = run_agent(agent=agent, playbook=playbook)
-
-
-
