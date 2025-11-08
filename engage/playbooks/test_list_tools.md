@@ -4,6 +4,6 @@ This is a simple test case to test your ability to list tools/functions.
 
 As a debugging step please tell us the current day of the week.
 
-As a debugging step please list in detail everything you know about the tools/functions available to your model. 
+As a debugging step please list in detail everything you know about the tools/functions available to your model and how they might relate to your environment.
 
 

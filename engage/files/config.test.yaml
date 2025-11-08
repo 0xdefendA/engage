@@ -1,6 +1,6 @@
 model:
   provider: google
-  model_name: gemini-2.5-flash
+  model_name: gemini-2.5-pro
 jira_url: https://example.atlassian.net
 jira_username: jira_username
 jira_api_token: jira_token
