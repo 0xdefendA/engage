@@ -7,14 +7,10 @@ logger.setLevel(logging.INFO)
 import yaml
 
 from agno.models.base import Model
-from agno.agent import Agent, AgentMemory
-from agno.run.response import RunEvent, RunResponse
+from agno.agent import Agent
+from agno.db.sqlite import SqliteDb
+from agno.run.agent import RunOutput
 
-from agno.memory.classifier import MemoryClassifier
-from agno.memory.summarizer import MemorySummarizer
-from agno.memory.manager import MemoryManager
-from agno.storage.agent.sqlite import SqliteAgentStorage
-from agno.memory.db.sqlite import SqliteMemoryDb
 from agno.tools.file import FileTools
 from agno.tools.decorator import tool
 from pathlib import Path
@@ -26,6 +22,8 @@ import os
 agent_storage: str = "tmp/agent_storage.db"
 agent_memory: str = "tmp/agent_memory.db"
 agent_database: str = "tmp/agent_database.db"
+
+db = SqliteDb(db_file=agent_memory)
 
 
 # tools
@@ -48,14 +46,6 @@ def get_config(environment="development"):
     except Exception as e:
         logger.error(f"Exception retrieving config: {e}")
     return my_config
-
-
-# utility to stream agno run responses to shiny
-def as_stream(response):
-    for chunk in response:
-        if isinstance(chunk, RunResponse) and isinstance(chunk.content, str):
-            if chunk.event == RunEvent.run_response:
-                yield chunk.content
 
 
 # select the provider and model
@@ -111,45 +101,33 @@ def get_agent(config, arguments) -> Agent:
     # create the agent with the chosen model
     agent = Agent(
         model=model_choice,
+        db=db,
         tools=[
             day_of_week,
             JiraIntegration(config=config),
             ConfluenceIntegration(config=config),
         ],
         session_id="engage_agent",
-        session_name="engage_agent",
         user_id="engage_agent",
         markdown=True,
-        show_tool_calls=False,
         telemetry=False,
-        monitoring=False,
         debug_mode=False,
         # setting instructions overrides the system prompt
         # instructions=[],
         additional_context=f"{environment_description}",
         # storage=SqliteAgentStorage(table_name="engage_agent", db_file=agent_storage),
         # Helps with context
-        add_datetime_to_instructions=True,
+        add_datetime_to_context=True,
         # # Adds the history of the conversation to the messages
         # add_history_to_messages=True,
         # # Number of history responses to add to the messages
         # num_history_responses=50,
-        # memory=AgentMemory(
-        #     db=SqliteMemoryDb(db_file=agent_memory),
-        #     create_user_memories=True,
-        #     create_session_summary=True,
-        #     update_user_memories_after_run=True,
-        #     update_session_summary_after_run=True,
-        #     classifier=MemoryClassifier(model=model_choice),
-        #     summarizer=MemorySummarizer(model=model_choice),
-        #     manager=MemoryManager(model=model_choice),
-        # ),
     )
 
     return agent
 
 
-def run_agent(agent: Agent, playbook: str) -> RunResponse:
+def run_agent(agent: Agent, playbook: str) -> RunOutput:
     playbook_content = ""
     # load the playbook
     with open(playbook, "r") as f:
