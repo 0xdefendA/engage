@@ -2,7 +2,6 @@ import os
 import sys
 import argparse
 from .utils import get_config, logger, get_agent, run_agent
-from agno.agent import Agent, RunResponse
 
 # turn off telemetry everywhere
 os.environ["AGNO_TELEMETRY"] = "false"
